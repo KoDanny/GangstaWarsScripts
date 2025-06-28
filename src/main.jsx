@@ -18,3 +18,4 @@ createRoot(document.querySelector('#react')).render(
 	</>
 );
 console.log(1);
+console.log('WORK', 1);
