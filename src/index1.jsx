@@ -1,12 +1,12 @@
 import { createRoot } from 'react-dom/client';
 
-function Module1() {
+export function Module1() {
 	return <div>Module1</div>;
 }
 
-const root = document.createElement('div');
+// const root = document.createElement('div');
 
-const container = document.querySelector('.gw-container');
-container.append(root);
+// const container = document.querySelector('.gw-container');
+// container.append(root);
 
-createRoot(root).render(<Module1 />);
+// createRoot(root).render(<Module1 />);
