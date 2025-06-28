@@ -5,28 +5,23 @@ import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 // https://vite.dev/config/
 export default defineConfig({
 	plugins: [react(), cssInjectedByJsPlugin()],
+	// optimizeDeps: {
+	// 	noDiscovery: true,
+	// 	include: [],
+	// },
 	build: {
-		minify: false,
+		minify: true,
 		outDir: 'build',
+		clear: false,
 		rollupOptions: {
-			input: 'src/main.jsx',
+			input: ['src/main.jsx', 'src/index1.jsx', 'src/index2.jsx'],
 			output: {
-				inlineDynamicImports: true,
-				entryFileNames: `build.userscript.js`,
+				// inlineDynamicImports: true,
+				entryFileNames: `modules/[name].userscript.js`,
+				chunkFileNames: `assets/[name].js`,
+				assetFileNames: `assets/[name].[ext]`,
 			},
 			treeshake: true,
-		},
-	},
-
-	server: {
-		port: 3000, // порт для локальной разработки
-		host: '0.0.0.0', // для доступа с других устройств
-		proxy: {
-			'*': {
-				target: 'https://gwars.io',
-				changeOrigin: true,
-				secure: false,
-			},
 		},
 	},
 });

@@ -1,0 +1,1 @@
+import{j as e,c as t}from"../assets/client.js";function n(){return e.jsx("div",{children:"App"})}const o=document.createElement("div"),r=document.querySelector(".gw-container");r.append(o);t.createRoot(o).render(e.jsx(n,{}));console.log(1);

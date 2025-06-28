@@ -1,0 +1,1 @@
+import{c as o,j as e}from"../assets/client.js";function n(){return e.jsx("div",{children:"Module1"})}const t=document.createElement("div"),r=document.querySelector(".gw-container");r.append(t);o.createRoot(t).render(e.jsx(n,{}));

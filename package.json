@@ -3,15 +3,19 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"main": "src/main.jsx",
 	"scripts": {
 		"build": "vite build",
+		"build-watch": "vite build --watch .",
+		"build-config": "vite --config src/module1/module1.config.js build",
 		"lint": "eslint .",
 		"preview": "vite preview"
 	},
-	"dependencies": {},
-	"devDependencies": {
+	"dependencies": {
 		"react": "^19.1.0",
-		"react-dom": "^19.1.0",
+		"react-dom": "^19.1.0"
+	},
+	"devDependencies": {
 		"@eslint/js": "^9.29.0",
 		"@types/react": "^19.1.8",
 		"@types/react-dom": "^19.1.6",
