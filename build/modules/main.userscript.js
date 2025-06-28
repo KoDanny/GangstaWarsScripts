@@ -1,1 +1,1 @@
-import{j as e,c as t}from"../assets/client.js";function n(){return e.jsx("div",{children:"App"})}const o=document.createElement("div"),r=document.querySelector(".gw-container");r.append(o);t.createRoot(o).render(e.jsx(n,{}));console.log(1);
+import{j as e,c as n}from"../assets/client.js";function r(){return e.jsx("div",{children:"App"})}const o=document.createElement("div");o.id="react";const t=document.querySelector(".gw-container");console.log(t);t.append(o);n.createRoot(document.querySelector("#react")).render(e.jsx(r,{}));console.log(1);
