@@ -156,6 +156,9 @@
 				document.getElementById('margintopdiv')
 			);
 
+		// Разделитель перед каждой строкой таймера
+		const separator = () => (isPda() ? ' ' : ' | ');
+
 		// --- Поиск родного контейнера, куда вставляются таймеры ---
 
 		const findContainerElem = () => {
@@ -200,18 +203,12 @@
 				container = span;
 			}
 
-			container.textContent = '';
-
-			const createSeparator = () => {
-				return document.createTextNode(isPda() ? ' ' : ' | ');
-			};
-
 			// Перепривязка строк таймеров
 			if (Config.WORK_TIMER) {
-				container.append(createSeparator(), workRow);
+				container.append(workRow);
 			}
 			if (Config.AP_TIMER) {
-				container.append(createSeparator(), apRow);
+				container.append(apRow);
 			}
 		};
 
@@ -268,6 +265,7 @@
 		return {
 			apRow,
 			workRow,
+			separator,
 			getOrCreateContainer,
 			attachObserver,
 			isObserverAlive,
@@ -331,11 +329,12 @@
 			if (!Config.AP_TIMER) return;
 
 			const row = Layout.apRow;
+			const sep = Layout.separator();
 			const data = Storage.load(STORAGE_KEYS.AP);
 
 			// Нет данных — кнопка обновления
 			if (!data) {
-				row.innerHTML = `<b>AP:</b> <a class="nul" href="/ops.php" style="${LINK_STYLE}">Обновить</a>`;
+				row.innerHTML = `${sep}<b>AP:</b> <a class="nul" href="/ops.php" style="${LINK_STYLE}">Обновить</a>`;
 				return;
 			}
 
@@ -344,13 +343,13 @@
 
 			// AP заполнены полностью
 			if (msLeft <= 0) {
-				row.innerHTML = `<b>AP:</b> <a class="nul" href="/ops.php" style="${LINK_STYLE}">${total}/${total} (Максимум)</a>`;
+				row.innerHTML = `${sep}<b>AP:</b> <a class="nul" href="/ops.php" style="${LINK_STYLE}">${total}/${total} (Максимум)</a>`;
 				return;
 			}
 
 			// Идёт восстановление
 			const current = data.current;
-			row.innerHTML = `<b>AP:</b> <a class="nul" href="/ops.php">[${current}/${total}] (${TimeUtils.format(msLeft)})</a>`;
+			row.innerHTML = `${sep}<b>AP:</b> <a class="nul" href="/ops.php">[${current}/${total}] (${TimeUtils.format(msLeft)})</a>`;
 		};
 
 		const tick = (now) => {
@@ -451,7 +450,7 @@
 
 			// Работа завершена
 			if (msLeft <= 0) {
-				row.innerHTML = `<b>Работа:</b> <a class="nul" href="/object.php?id=${data.objectId}" style="${LINK_STYLE}">Не работает</a>`;
+				row.innerHTML = `${sep}<b>Работа:</b> <a class="nul" href="/object.php?id=${data.objectId}" style="${LINK_STYLE}">Не работает</a>`;
 				return;
 			}
 
@@ -461,7 +460,7 @@
 				msLeft,
 			)}), <i>${payPart}</i>`;
 
-			row.innerHTML = `<b>Работа:</b> <a class="nul" href="/object.php?id=${data.objectId}">${linkText}</a>`;
+			row.innerHTML = `${sep}<b>Работа:</b> <a class="nul" href="/object.php?id=${data.objectId}">${linkText}</a>`;
 		};
 
 		const tick = (now) => {
