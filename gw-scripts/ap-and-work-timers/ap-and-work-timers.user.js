@@ -441,6 +441,7 @@
 			if (!Config.WORK_TIMER) return;
 
 			const row = Layout.workRow;
+			const sep = Layout.separator();
 			const data = Storage.load(STORAGE_KEYS.WORK);
 
 			if (!data) {
