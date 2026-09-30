@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         [GWars] AP & Work Timers(0.1.3)
+// @name         [GWars] AP & Work Timers(0.1.4)
 // @namespace    http://tampermonkey.net/
-// @version      0.1.3
+// @version      0.1.4
 // @description  Добавляет таймеры работы и очков действий в шапку игры
 // @author       Mr.Bonanno
 // @match        https://www.gwars.io/*

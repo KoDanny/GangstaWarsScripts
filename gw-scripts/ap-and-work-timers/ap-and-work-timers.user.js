@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         [GWars] AP & Work Timers(0.1.3)
+// @name         [GWars] AP & Work Timers(0.1.4)
 // @namespace    http://tampermonkey.net/
-// @version      0.1.3
+// @version      0.1.4
 // @description  Добавляет таймеры работы и очков действий в шапку игры
 // @author       Mr.Bonanno
 // @match        https://www.gwars.io/*
@@ -47,6 +47,7 @@
 		// Тик опроса: обновляет цифры по времени.
 		TICK_MS: 1000,
 		COLSPAN_FULL: 100,
+		MARGIN_TOP_PDA: 54,
 	};
 
 	//========= STORAGE ==============
@@ -111,41 +112,6 @@
 
 	// Создаем свое и ищем, куда бы вставить
 	const Layout = (() => {
-		// --- CSS ---
-		const style = document.createElement('style');
-		style.textContent = `
-			@media (max-width: 800px) {
-				#margintopdiv { margin-top: 84px !important; }
-				#gwars-timers-container .gw-timer-separator { display: none; }
-
-			}
-
-			.gw-timer-row { white-space: nowrap; }
-			.gw-timers-container { margin-left: 6px; }
-			.gw-timers-cell { padding-left: 24px; }
-		`;
-		document.head.appendChild(style);
-
-		// --- DOM-строки таймеров (создаются один раз) ---
-		const apRow = (() => {
-			const el = document.createElement('span');
-			el.id = 'gwars-ap-timer';
-			el.className = 'gw-timer-row';
-			return el;
-		})();
-
-		const workRow = (() => {
-			const el = document.createElement('span');
-			el.id = 'gwars-work-timer';
-			el.className = 'gw-timer-row';
-			return el;
-		})();
-
-		let container = null;
-		let observer = null;
-		let observerTarget = null;
-		let isRendering = false;
-
 		// --- Определение контекста страницы ---
 
 		const isOutland = () => location.pathname.startsWith('/walk');
@@ -155,6 +121,47 @@
 				document.getElementById('pdainfolayer0') ||
 				document.getElementById('margintopdiv')
 			);
+
+		// --- CSS ---
+		const getMarginTop = () => {
+			let margin = CONSTANTS.MARGIN_TOP_PDA;
+			if (Config.AP_TIMER) margin += 15;
+			if (Config.WORK_TIMER) margin += 15;
+			return margin;
+		};
+
+		const style = document.createElement('style');
+		style.textContent = `
+			.pda-timer {
+				display: block
+			}
+			@media (max-width: 800px) {
+				#margintopdiv { margin-top: ${getMarginTop()}px !important; }
+			  .gw-timer-row { white-space: nowrap; }
+			  .gw-timers-container { margin-left: 6px; }
+			  .gw-timers-cell { padding-left: 24px; }
+		`;
+		document.head.appendChild(style);
+
+		// --- DOM-строки таймеров (создаются один раз) ---
+		const apRow = (() => {
+			const el = document.createElement('span');
+			el.id = 'gwars-ap-timer';
+			el.classList.add(isPda() ? 'pda-timer' : 'gw-timer-row');
+			return el;
+		})();
+
+		const workRow = (() => {
+			const el = document.createElement('span');
+			el.id = 'gwars-work-timer';
+			el.classList.add(isPda() ? 'pda-timer' : 'gw-timer-row');
+			return el;
+		})();
+
+		let container = null;
+		let observer = null;
+		let observerTarget = null;
+		let isRendering = false;
 
 		// Разделитель перед каждой строкой таймера
 		const separator = () => (isPda() ? ' ' : ' | ');
@@ -172,6 +179,13 @@
 		};
 
 		// --- Создание/пересоздание контейнера и вставка строк ---
+
+		// Защита от дублирования
+		const removeDuplicateContainers = (id, keep) => {
+			document.querySelectorAll(`#${id}`).forEach((el) => {
+				if (el !== keep && el.isConnected) el.remove();
+			});
+		};
 
 		const buildTimersContainer = (parent) => {
 			if (isPda()) {
@@ -195,6 +209,7 @@
 					tr.appendChild(td);
 					tbody.appendChild(tr);
 				}
+				removeDuplicateContainers('gw-timers-cell', td);
 				container = td;
 			} else {
 				let span = document.getElementById('gwars-timers-container');
@@ -203,6 +218,7 @@
 					span.id = 'gwars-timers-container';
 					parent.appendChild(span);
 				}
+				removeDuplicateContainers('gwars-timers-container', span);
 				container = span;
 			}
 
