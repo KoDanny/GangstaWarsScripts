@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         [GWars] AP & Work Timers
+// @name         [GWars] AP & Work Timers(0.1.3)
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.1.3
 // @description  Добавляет таймеры работы и очков действий в шапку игры
 // @author       Mr.Bonanno
 // @match        https://www.gwars.io/*
@@ -351,7 +351,9 @@
 			}
 
 			// Идёт восстановление
-			const current = data.current;
+			const remainingPeriods = Math.ceil(msLeft / CONSTANTS.AP_PERIOD_MS);
+			const current = total - remainingPeriods;
+
 			row.innerHTML = `${sep}<b>AP:</b> <a class="nul" href="/ops.php">[${current}/${total}] (${TimeUtils.format(msLeft)})</a>`;
 		};
 
@@ -361,11 +363,14 @@
 			syncFromPage();
 
 			const data = Storage.load(STORAGE_KEYS.AP);
-			const renderKey = data
-				? `${data.endTime > now ? data.current : data.total}|${Math.ceil(
-						Math.max(0, data.endTime - now) / 1000,
-					)}`
-				: 'none';
+			let renderKey = 'none';
+			if (data) {
+				const msLeft = Math.max(0, data.endTime - now);
+				const remainingPeriods = Math.ceil(msLeft / CONSTANTS.AP_PERIOD_MS);
+				const current =
+					msLeft <= 0 ? data.total : data.total - remainingPeriods;
+				renderKey = `${current}|${Math.ceil(msLeft / 1000)}`;
+			}
 
 			renderIfChanged(renderKey, () => render(now));
 		};
