@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         [GWars] AP & Work Timers(0.1.4)
+// @name         [GWars] AP & Work Timers(0.1.5)
 // @namespace    http://tampermonkey.net/
-// @version      0.1.4
+// @version      0.1.5
 // @description  Добавляет таймеры работы и очков действий в шапку игры
 // @author       Mr.Bonanno
 // @match        https://www.gwars.io/*
@@ -489,10 +489,12 @@
 			}
 
 			const nextPay = getNextPayTime(data, now);
-			const payPart = nextPay ? `з/п ${TimeUtils.formatClock(nextPay)}` : '';
+			const payPart = nextPay
+				? `, <i>з/п ${TimeUtils.formatClock(nextPay)}</i>`
+				: '';
 			const linkText = `до ${TimeUtils.formatClock(data.endTime)} (${TimeUtils.format(
 				msLeft,
-			)}), <i>${payPart}</i>`;
+			)})${payPart}`;
 
 			row.innerHTML = `${sep}<b>Работа:</b> <a class="nul" href="/object.php?id=${data.objectId}">${linkText}</a>`;
 		};
