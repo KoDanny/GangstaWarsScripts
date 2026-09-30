@@ -9,8 +9,7 @@
 // @updateURL    https://raw.githubusercontent.com/KoDanny/GangstaWarsScripts/main/gw-scripts/ap-and-work-timers/ap-and-work-timers.meta.js
 // @downloadURL  https://raw.githubusercontent.com/KoDanny/GangstaWarsScripts/main/gw-scripts/ap-and-work-timers/ap-and-work-timers.user.js
 // @grant        none
-// ==/UserScript==
-
+// ==/UserScript=
 (function () {
 	'use strict';
 
@@ -125,8 +124,17 @@
 		// --- CSS ---
 		const getMarginTop = () => {
 			let margin = CONSTANTS.MARGIN_TOP_PDA;
-			if (Config.AP_TIMER) margin += 15;
-			if (Config.WORK_TIMER) margin += 15;
+			if (Config.AP_TIMER) {
+				margin += 15;
+			}
+			if (Config.WORK_TIMER) {
+				margin += 15;
+			}
+
+			if (!document.getElementById('gwars-work-timer')) {
+				margin -= 15;
+			}
+
 			return margin;
 		};
 
