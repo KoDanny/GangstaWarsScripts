@@ -9,7 +9,8 @@
 // @updateURL    https://raw.githubusercontent.com/KoDanny/GangstaWarsScripts/main/gw-scripts/ap-and-work-timers/ap-and-work-timers.meta.js
 // @downloadURL  https://raw.githubusercontent.com/KoDanny/GangstaWarsScripts/main/gw-scripts/ap-and-work-timers/ap-and-work-timers.user.js
 // @grant        none
-// ==/UserScript=
+// ==/UserScript==
+
 (function () {
 	'use strict';
 
