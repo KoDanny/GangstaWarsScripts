@@ -132,10 +132,6 @@
 				margin += 15;
 			}
 
-			if (!document.getElementById('gwars-work-timer')) {
-				margin -= 15;
-			}
-
 			return margin;
 		};
 
